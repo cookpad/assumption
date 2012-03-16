@@ -1,0 +1,26 @@
+= assumption
+Instead of verify, Assumption check params.
+Assumption check nested params and work with interrupting block.
+
+  class UsersController
+    assume :include => {:user => [:nickname, :email]}, :only => [:new, :create] do
+      raise Service::BadRequest
+    end
+
+    assume :exclude => {:user => :email}, :only => [:update] do
+      raise Service::BadRequest 
+    end
+  end
+
+Assumption::ActionController.interrupt is accessor for default interruption
+
+  Assumption::ActionController.interrupt = Proc.new { raise Service::BadRequest }
+  class UsersController
+    assume :include => {:user => [:nickname, :email]}, :only => [:new, :create]
+  end
+
+== Copyright
+
+Copyright (c) 2012 morita shingo. See License.txt fo
+further details.
+
